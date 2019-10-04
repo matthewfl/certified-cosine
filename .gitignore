@@ -1,0 +1,11 @@
+certified_cosine_benchmark
+*.o
+*pyc
+*.out
+unit_tests
+Makefile.deps
+*gud*
+build/
+*.so
+*.egg-info/
+
