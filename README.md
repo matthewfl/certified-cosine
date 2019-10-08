@@ -4,7 +4,7 @@ Certified Cosine is a fast method for generating certificates for nearest
 neighbor methods in high dimensional spaces.  Certified Cosine is not
 probabilistic but rather *certifies* that the returned result is correct.
 
-More information can be found in our paper [here](todo link to paper)
+More information can be found in our paper [here](https://arxiv.org/abs/1910.02478)
 
 
 ## Usage (Python)
@@ -130,7 +130,7 @@ This requires [Eigen](http://eigen.tuxfamily.org/).
  author = {Francis-Landau, Matthew and Van Durme, Benjamin}
  title = {Fast and/or Exact Nearest Neighbors}
  year = {2019}
- url = {...}
+ url = {https://arxiv.org/abs/1910.02478}
  keywords={Nearest Neighbors,Certificates,Cosine similarity}
 }
 
