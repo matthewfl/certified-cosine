@@ -68,7 +68,7 @@ neighbors, number_expanded, _, created_certificate = engine.lookup_k_limit(query
 #include <Eigen/Dense>
 
 
-// construct a random vector matrix
+// construct a random data matrix
 Eigen::MatrixXf vectors = MatrixXf::Random(10000, 100);
 vectors.array().colwise() /= vectors.rowwise().norm();  // norm the vectors
 
@@ -80,6 +80,10 @@ certified_cosine::preprocess<float>(vectors, storage, 50 /* number neighbors */)
 // OPTIONAL: to load or save the KNNG graph
 storage.Save("my_file");
 stroage.Load("my_file");
+
+// OPTIONAL: compress storage to reduce memory during lookup
+certified_cosine::compact_stoarge<float> compact_storage;
+storage.BuildCompactStorage(compact_storage);
 
 
 // construct a lookup engine to perform queries against.
@@ -94,8 +98,15 @@ Eigen::VectorXf query = Eigen::VectorXf::Random(100).normalized();
 // and how certification interacts.  Here set top-10 nearest neighbors with a budget of 50,000
 certified_cosine::LimitExpand<certified_cosine::CountingNBestPolicy<float>> policy(50000, 10);
 
+// perform the lookup operation
+engine.lookup(query, policy);
 
-
+// get the top ids in a vector
+std::vector<int> top_10;
+while(!policy.items.is_empty()) {
+  top_10.push_back(policy.items.max().id);
+  policy.items.remove_max();
+}
 
 
 
@@ -117,9 +128,8 @@ pip install .
 ```
 
 
-This has been tested with g++-7 and up
+This has been tested with g++-7 and up.
 This requires [Eigen](http://eigen.tuxfamily.org/).
-
 
 
 
@@ -127,10 +137,10 @@ This requires [Eigen](http://eigen.tuxfamily.org/).
 
 ```
 @article{certified_cosine,
- author = {Francis-Landau, Matthew and Van Durme, Benjamin}
- title = {Fast and/or Exact Nearest Neighbors}
- year = {2019}
- url = {https://arxiv.org/abs/1910.02478}
+ author = {Francis-Landau, Matthew and Van Durme, Benjamin},
+ title = {Fast and/or Exact Nearest Neighbors},
+ year = {2019},
+ url = {https://arxiv.org/abs/1910.02478},
  keywords={Nearest Neighbors,Certificates,Cosine similarity}
 }
 
